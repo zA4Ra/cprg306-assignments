@@ -5,53 +5,33 @@ import NewItem from "./new-item";
 
 export default function Page() {
   const [name, setName] = useState("");
-  const [nameError, setNameError] = useState("");
+  const [nameTouched, setNameTouched] = useState(false);
 
   const [quantity, setQuantity] = useState(1);
   const [category, setCategory] = useState("produce");
 
-  // Validate while typing
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setName(value);
-
-    if (value.trim().length === 0) {
-      setNameError("Name is required.");
-    } else if (value.trim().length < 2) {
-      setNameError("Name must be at least 2 characters.");
-    } else {
-      setNameError("");
-    }
-  };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (name.trim().length === 0) {
-      setNameError("Name is required.");
-      return;
-    }
+    // mark field as touched when submitting
+    setNameTouched(true);
 
-    if (name.trim().length < 2) {
-      setNameError("Name must be at least 2 characters.");
-      return;
+    if (!name || name.trim().length < 2) {
+      return; // error will now appear
     }
 
     alert(`Added ${quantity} x ${name} (${category})`);
+    setName("");
+    setNameTouched(false);
   };
 
   return (
-    <main
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        paddingTop: "40px",
-      }}
-    >
+    <main className="flex justify-center pt-10">
       <NewItem
         name={name}
-        nameError={nameError}
-        handleNameChange={handleNameChange}
+        setName={setName}
+        nameTouched={nameTouched}
+        setNameTouched={setNameTouched}
         quantity={quantity}
         setQuantity={setQuantity}
         category={category}
@@ -61,3 +41,4 @@ export default function Page() {
     </main>
   );
 }
+

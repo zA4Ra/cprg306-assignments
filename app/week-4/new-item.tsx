@@ -1,7 +1,8 @@
 type NewItemProps = {
   name: string;
-  nameError: string;
-  handleNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setName: (value: string) => void;
+  nameTouched: boolean;
+  setNameTouched: (value: boolean) => void;
   quantity: number;
   setQuantity: (value: number) => void;
   category: string;
@@ -11,41 +12,39 @@ type NewItemProps = {
 
 export default function NewItem({
   name,
-  nameError,
-  handleNameChange,
+  setName,
+  nameTouched,
+  setNameTouched,
   quantity,
   setQuantity,
   category,
   setCategory,
   handleSubmit,
 }: NewItemProps) {
+  // only show error if field has been touched (onBlur or submit)
+  const showError = nameTouched && (!name || name.trim().length < 2);
+
   return (
     <form
       onSubmit={handleSubmit}
-      style={{
-        background: "black",
-        color: "hotpink",
-        border: "2px solid hotpink",
-        padding: "2rem",
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        minWidth: "250px",
-      }}
+      className="flex flex-col gap-3 p-6 border-2 border-pink-500 bg-black text-pink-500 min-w-[260px]"
     >
       <div>
         <label>Name:</label>
         <input
           value={name}
-          onChange={handleNameChange}
-          style={{
-            background: "black",
-            color: "hotpink",
-            border: "1px solid hotpink",
-          }}
+          onChange={(e) => setName(e.target.value)}
+          onBlur={() => setNameTouched(true)} // only mark touched on blur
+          className={`block w-full bg-black text-pink-500 border p-1
+            ${showError ? "border-red-500" : "border-pink-500"}`}
         />
-        {nameError && (
-          <p style={{ color: "red", margin: 0 }}>{nameError}</p>
+
+        {showError && (
+          <p className="text-red-500 text-sm">
+            {name.trim().length === 0
+              ? "Name is required."
+              : "Name must be at least 2 characters."}
+          </p>
         )}
       </div>
 
@@ -57,11 +56,7 @@ export default function NewItem({
           min="1"
           max="99"
           onChange={(e) => setQuantity(Number(e.target.value))}
-          style={{
-            background: "black",
-            color: "hotpink",
-            border: "1px solid hotpink",
-          }}
+          className="bg-black text-pink-500 border border-pink-500 p-1 w-full"
         />
       </div>
 
@@ -70,11 +65,7 @@ export default function NewItem({
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          style={{
-            background: "black",
-            color: "hotpink",
-            border: "1px solid hotpink",
-          }}
+          className="bg-black text-pink-500 border border-pink-500 p-1 w-full"
         >
           <option value="produce">Produce</option>
           <option value="dairy">Dairy</option>
@@ -85,16 +76,13 @@ export default function NewItem({
 
       <button
         type="submit"
-        style={{
-          background: "black",
-          color: "hotpink",
-          border: "1px solid hotpink",
-          padding: "6px",
-          cursor: "pointer",
-        }}
+        disabled={!name || name.trim().length < 2}
+        className="border border-pink-500 p-2 disabled:bg-gray-400 disabled:cursor-not-allowed"
       >
         Add Item
       </button>
     </form>
   );
 }
+
+
