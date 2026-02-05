@@ -10,18 +10,20 @@ export default function Page() {
   const [quantity, setQuantity] = useState(1);
   const [category, setCategory] = useState("produce");
 
-  // Only clears error when user fixes input
+  // Validate while typing
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setName(value);
 
-    // If user fixes the problem, remove error
-    if (value.trim().length >= 2) {
+    if (value.trim().length === 0) {
+      setNameError("Name is required.");
+    } else if (value.trim().length < 2) {
+      setNameError("Name must be at least 2 characters.");
+    } else {
       setNameError("");
     }
   };
 
-  // Validate only on submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -35,7 +37,6 @@ export default function Page() {
       return;
     }
 
-    setNameError("");
     alert(`Added ${quantity} x ${name} (${category})`);
   };
 
@@ -58,4 +59,5 @@ export default function Page() {
         handleSubmit={handleSubmit}
       />
     </main>
-  )}
+  );
+}
