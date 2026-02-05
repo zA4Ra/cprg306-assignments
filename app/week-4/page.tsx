@@ -5,77 +5,57 @@ import NewItem from "./new-item";
 
 export default function Page() {
   const [name, setName] = useState("");
+  const [nameError, setNameError] = useState("");
+
   const [quantity, setQuantity] = useState(1);
   const [category, setCategory] = useState("produce");
-  const [submitError, setSubmitError] = useState("");
-  const [nameTouched, setNameTouched] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  // Only clears error when user fixes input
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setName(value);
 
-    const item = { name, quantity, category };
-    console.log(item);
+    // If user fixes the problem, remove error
+    if (value.trim().length >= 2) {
+      setNameError("");
+    }
+  };
 
-    setName("");
-    setQuantity(1);
-    setCategory("produce");
-    setSubmitError("");
+  // Validate only on submit
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (name.trim().length === 0) {
+      setNameError("Name is required.");
+      return;
+    }
+
+    if (name.trim().length < 2) {
+      setNameError("Name must be at least 2 characters.");
+      return;
+    }
+
+    setNameError("");
+    alert(`Added ${quantity} x ${name} (${category})`);
   };
 
   return (
-    <main>
+    <main
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        paddingTop: "40px",
+      }}
+    >
       <NewItem
         name={name}
-        setName={setName}
-        nameTouched={nameTouched}
-        setNameTouched={setNameTouched}
+        nameError={nameError}
+        handleNameChange={handleNameChange}
         quantity={quantity}
         setQuantity={setQuantity}
         category={category}
         setCategory={setCategory}
         handleSubmit={handleSubmit}
-        submitError={submitError}
       />
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name: </label>
-          
-        </div>
-        <div>
-          <label htmlFor="quantity">Quantity: </label>
-          <input
-            id="quantity"
-            type="number"
-            min="1"
-            max="99"
-            value={quantity}
-            onChange={(e) => setQuantity(Number(e.target.value))}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="category">Category: </label>
-          <select
-            id="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="produce">Produce</option>
-            <option value="dairy">Dairy</option>
-            <option value="bakery">Bakery</option>
-            <option value="meat">Meat</option>
-            <option value="frozen foods">Frozen Foods</option>
-            <option value="canned goods">Canned Goods</option>
-            <option value="dry goods">Dry Goods</option>
-            <option value="beverages">Beverages</option>
-            <option value="snacks">Snacks</option>
-            <option value="household">Household</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-  <button type="submit">Add Item</button>
-</form>
     </main>
-  );
-}
+  )}
