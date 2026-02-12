@@ -21,7 +21,6 @@ export default function NewItem({
   setCategory,
   handleSubmit,
 }: NewItemProps) {
-  // only show error if field has been touched (onBlur or submit)
   const showError = nameTouched && (!name || name.trim().length < 2);
 
   return (
@@ -34,7 +33,8 @@ export default function NewItem({
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          onBlur={() => setNameTouched(true)} // only mark touched on blur
+          onFocus={() => setNameTouched(false)} // ← clear error while typing
+          onBlur={() => setNameTouched(true)}   // ← mark touched on blur
           className={`block w-full bg-black text-pink-500 border p-1
             ${showError ? "border-red-500" : "border-pink-500"}`}
         />

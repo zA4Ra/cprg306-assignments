@@ -13,11 +13,10 @@ export default function Page() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // mark field as touched when submitting
-    setNameTouched(true);
+    setNameTouched(true); // mark touched on submit
 
     if (!name || name.trim().length < 2) {
-      return; // error will now appear
+      return; // error will now show
     }
 
     alert(`Added ${quantity} x ${name} (${category})`);
