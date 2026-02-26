@@ -2,27 +2,42 @@
 
 import React, { useState } from "react";
 import Item from "./item";
-import items from "./items.json";
 
 type SortOption = "name" | "category" | "grouped";
 
-const ItemList = () => {
+type ItemType = {
+  id: string;
+  name: string;
+  quantity: number;
+  category: string;
+};
+
+type ItemListProps = {
+  items: ItemType[];
+};
+
+const ItemList = ({ items }: ItemListProps) => {
   const [sortBy, setSortBy] = useState<SortOption>("name");
 
+  // ✅ create copy before sorting (immutability)
   const sortedItems = [...items].sort((a, b) => {
     if (sortBy === "name") return a.name.localeCompare(b.name);
     if (sortBy === "category") return a.category.localeCompare(b.category);
     return 0;
   });
 
-  const groupedItems = items.reduce((acc: Record<string, typeof items>, item) => {
+  // ✅ create grouped copy without mutating props
+  const groupedItems = items.reduce<Record<string, ItemType[]>>((acc, item) => {
     if (!acc[item.category]) acc[item.category] = [];
     acc[item.category].push(item);
     return acc;
-  }, {} as Record<string, typeof items>);
+  }, {});
 
+  // ✅ sort each group safely
   Object.keys(groupedItems).forEach((cat) => {
-    groupedItems[cat].sort((a, b) => a.name.localeCompare(b.name));
+    groupedItems[cat] = [...groupedItems[cat]].sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
   });
 
   return (
@@ -39,6 +54,7 @@ const ItemList = () => {
         >
           Sort by Name
         </button>
+
         <button
           className={`px-4 py-2 rounded-lg font-semibold transition ${
             sortBy === "category"
@@ -49,6 +65,7 @@ const ItemList = () => {
         >
           Sort by Category
         </button>
+
         <button
           className={`px-4 py-2 rounded-lg font-semibold transition ${
             sortBy === "grouped"
@@ -70,6 +87,7 @@ const ItemList = () => {
                 <h2 className="font-bold text-lg text-teal-300 capitalize mb-2">
                   {category}
                 </h2>
+
                 {groupedItems[category].map((item) => (
                   <Item key={item.id} item={item} />
                 ))}

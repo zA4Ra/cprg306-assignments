@@ -29,6 +29,11 @@ export default function Home() {
           Week 5
           </Link>
         </li>
+        <li>
+          <Link href="/week-6" className="text-white-600 underline">
+          Week 6
+          </Link>
+        </li>
       </ul>
     </main>
   );
