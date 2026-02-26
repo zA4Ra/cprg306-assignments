@@ -19,21 +19,18 @@ type ItemListProps = {
 const ItemList = ({ items }: ItemListProps) => {
   const [sortBy, setSortBy] = useState<SortOption>("name");
 
-  // ✅ create copy before sorting (immutability)
   const sortedItems = [...items].sort((a, b) => {
     if (sortBy === "name") return a.name.localeCompare(b.name);
     if (sortBy === "category") return a.category.localeCompare(b.category);
     return 0;
   });
 
-  // ✅ create grouped copy without mutating props
   const groupedItems = items.reduce<Record<string, ItemType[]>>((acc, item) => {
     if (!acc[item.category]) acc[item.category] = [];
     acc[item.category].push(item);
     return acc;
   }, {});
 
-  // ✅ sort each group safely
   Object.keys(groupedItems).forEach((cat) => {
     groupedItems[cat] = [...groupedItems[cat]].sort((a, b) =>
       a.name.localeCompare(b.name)
@@ -41,7 +38,7 @@ const ItemList = ({ items }: ItemListProps) => {
   });
 
   return (
-    <div className="border-2 border-teal-400 rounded-xl p-4 bg-gray-900 shadow-lg">
+    <div className="border-5 border-teal-400 rounded-xl p-4 bg-black-900 shadow-lg">
       {/* Buttons */}
       <div className="mb-6 flex space-x-3">
         <button

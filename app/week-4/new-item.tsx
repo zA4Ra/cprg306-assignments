@@ -67,10 +67,13 @@ export default function NewItem({
           onChange={(e) => setCategory(e.target.value)}
           className="bg-black text-pink-500 border border-pink-500 p-1 w-full"
         >
-          <option value="produce">Produce</option>
-          <option value="dairy">Dairy</option>
-          <option value="snacks">Snacks</option>
-          <option value="other">Other</option>
+           <option className="text-black">Produce</option>
+        <option className="text-black">Dairy</option>
+        <option className="text-black">Bakery</option>
+        <option className="text-black">Meat</option>
+        <option className="text-black">Canned Goods</option>
+        <option className="text-black">Dry Goods</option>
+        <option className="text-black">Household</option>
         </select>
       </div>
 

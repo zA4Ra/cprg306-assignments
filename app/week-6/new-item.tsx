@@ -58,10 +58,13 @@ const NewItem = ({ onAddItem }: NewItemProps) => {
         value={category}
         onChange={(e) => setCategory(e.target.value)}
       >
-        <option value="produce">Produce</option>
-        <option value="dairy">Dairy</option>
-        <option value="bakery">Bakery</option>
-        <option value="meat">Meat</option>
+        <option className="text-black">Produce</option>
+        <option className="text-black">Dairy</option>
+        <option className="text-black">Bakery</option>
+        <option className="text-black">Meat</option>
+        <option className="text-black">Canned Goods</option>
+        <option className="text-black">Dry Goods</option>
+        <option className="text-black">Household</option>
       </select>
 
       <button className="bg-teal-500 text-white px-4 py-2 rounded">
