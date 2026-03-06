@@ -34,6 +34,11 @@ export default function Home() {
           Week 6
           </Link>
         </li>
+        <li>
+          <Link href="/week-7" className="text-white-600 underline">
+          Week 7
+          </Link>
+        </li>
       </ul>
     </main>
   );
