@@ -6,7 +6,6 @@ import ItemList from "./item-list";
 import MealIdeas from "./meal-ideas";
 import itemdata from "./itemdata.json";
 
-
 type Item = {
   id: string;
   name: string;
@@ -15,7 +14,7 @@ type Item = {
 };
 
 export default function Page() {
-  const [items, setItems] = useState<Item[]>([]);
+  const [items, setItems] = useState<Item[]>(itemdata);
   const [selectedItemName, setSelectedItemName] = useState("");
 
   const handleAddItem = (newItem: Item) => {
